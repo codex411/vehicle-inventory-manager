@@ -24,6 +24,15 @@
 			$inputCor      = new DOM('[data-js="cor"]');
 			$inputMarcaModelo = new DOM('[data-js="marca_modelo"]');
 			$tableList 	   = new DOM('[data-js="tableList"]');
+
+			//TESTE
+			$inputUrlImage.get(0).value    = 'http://carroecarros.com.br/wp-content/uploads/2017/06/Novo-Punto-2018-6.jpg';
+			$inputMarcaModelo.get(0).value = 'VW Gol 1.6';
+			$inputAno.get(0).value 		   = '2000';
+			$inputPlaca.get(0).value	   = 'MPB-2900';
+			$inputCor.get(0).value		   = 'Prata';
+			//TESTE
+
 			loadDataCompany();
 			initEvents();
 		}
@@ -67,6 +76,9 @@
 				}
 			}
 		}
+		function handleClickRemoveCar(evt) {
+			this.parentElement.parentElement.remove();
+		}
 		function validateInputs(data) {
 			var messages = '';
 			if (! (!!data.image.value.match(/^https?:\/\/\w[\w\W]+\/[\w/-]+\.[jpe?g|png|gif]+$/g)) ) {
@@ -96,17 +108,22 @@
 		function insertCarInList(data) {
 			var $row = $tableList.get(0).insertRow();
 			$row.insertCell().innerHTML = data.id;
-			$row.insertCell().appendChild(createElementImg(data.image.value));
+			$row.insertCell().appendChild(createElementImg(data.image.value, ['img-table']));
 			$row.insertCell().innerHTML = data.marca.value;
 			$row.insertCell().innerHTML = data.ano.value;
 			$row.insertCell().innerHTML = data.cor.value;
 			$row.insertCell().innerHTML = data.placa.value;
+			var icoRemove = createElementImg('assets/img/ico-remove.png', ['ico', 'ico-clickable'], 'Remover');
+			$row.insertCell().appendChild(icoRemove);
+			icoRemove.addEventListener('click', handleClickRemoveCar, false);
 		}
-		function createElementImg(source) {
+		function createElementImg(source, cssClasses, title) {
 			var img   = doc.createElement('img');
 			img.src   = source;
-			img.width = 50;
-			img.title = source;
+			img.title = title || source;
+			cssClasses.forEach(function(className) {
+				img.classList.add(className);
+			});
 			return img
 		}
 
