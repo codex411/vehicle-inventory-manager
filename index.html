@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>C-29 - Revendedora de Carros</title>
+	<style>
+		.main {
+			text-align: -webkit-center;
+		}
+		.app_name {
+			display: inline-block;
+		}
+		.table {
+			text-align: center;
+			border: solid #000 1px;
+		}
+		.table thead {
+			background-color: gainsboro;
+		}
+		input {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<main class="main">
+		<header>
+			<h1 class="app_name" data-js="AppName"></h1>
+			<small data-js="AppPhone"></small>
+		</header>
+		<section>
+			<form data-js="form_register">
+				<div>
+					<input type="text" data-js="url_image" name="url_image" placeholder="Imagem (URL)"><br>
+					<input type="text" data-js="marca_modelo" name="marca_modelo" placeholder="Marca / Modelo"><br>
+					<input type="text" data-js="ano" name="ano" placeholder="Ano"><br>
+					<input type="text" data-js="cor" name="cor" placeholder="Cor"><br>
+					<input type="text" data-js="placa" name="placa" placeholder="Placa"><br>
+				</div>
+				<div>
+					<button type="submit">Cadastrar</button>
+				</div>
+			</form>
+		</section>
+		<hr>
+		<section>
+			<h2>Listagem de Carros</h2>
+			<table class="table" data-js="tableList">
+				<thead>
+					<tr>
+						<td>#</td>
+						<td>Imagem</td>
+						<td>Marca/Modelo</td>
+						<td>Ano</td>
+						<td>Cor</td>
+						<td>Placa</td>
+					</tr>
+				</thead>
+				<tr></tr>
+			</table>
+		</section>
+		<footer></footer>
+	</main>
+	<script src="dom.js"></script>
+	<script src="main.js"></script>
+</body>
+</html>
