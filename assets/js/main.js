@@ -50,44 +50,57 @@
 		function handleSubmitForm(evt) {
 			evt.preventDefault();
 			var dataInputs = {
-				id:    ++lastID,
-				image: $inputUrlImage.get(0).value,
-				marca: $inputMarcaModelo.get(0).value,
-				ano:   $inputAno.get(0).value,
-				cor:   $inputCor.get(0).value,
-				placa: $inputPlaca.get(0).value
+				image: $inputUrlImage.get(0),
+				marca: $inputMarcaModelo.get(0),
+				ano:   $inputAno.get(0),
+				cor:   $inputCor.get(0),
+				placa: $inputPlaca.get(0)
 			};
 			try {
 				validateInputs(dataInputs);
+				dataInputs.id = ++lastID;
 				insertCarInList(dataInputs);
 			} catch (e) {
-				alert('Favor verificar e corrigir os seguintes campos: \n\n' + e.message);
+				for (var input in dataInputs) {
+					if (dataInputs[input].validate === false)
+						dataInputs[input].classList.add('error-validate');
+				}
 			}
 		}
 		function validateInputs(data) {
 			var messages = '';
-			if (! (!!data.image.match(/^https?:\/\/\w[\w\W]+\/[\w/-]+\.[jpe?g|png|gif]+$/g)) )
+			if (! (!!data.image.value.match(/^https?:\/\/\w[\w\W]+\/[\w/-]+\.[jpe?g|png|gif]+$/g)) ) {
 				messages = ' - Imagem/URL \n';
-			if (! (!!data.marca.match(/[\s\S]{5}/g)) )
+				data.image.validate = false;
+			}
+			if (! (!!data.marca.value.match(/[\s\S]{5}/g)) ) {
 				messages += ' - Marca \n';
-			if (! (!!data.ano.match(/^(1|2)\d\d/g)) )
+				data.marca.validate = false;
+			}
+			if (! (!!data.ano.value.match(/^(1|2)\d\d/g)) ) {
 				messages += ' - Ano \n';
-			if (! (!!data.cor.match(/\w{3}/g)) )
+				data.ano.validate = false;
+			}
+			if (! (!!data.cor.value.match(/\w{3}/g)) ) {
 				messages += ' - Cor \n';
-			if (! (!!data.placa.match(/[A-Za-z]{3,}\-[\d]{4,}/g)) )
+				data.cor.validate = false;
+			}
+			if (! (!!data.placa.value.match(/[A-Za-z]{3,}\-[\d]{4,}/g)) ) {
 				messages += ' - Placa \n';
+				data.placa.validate = false;
+			}
 
 			if (messages !== '')
 				throw new Error(messages);
 		}
 		function insertCarInList(data) {
 			var $row = $tableList.get(0).insertRow();
-			$row.insertCell().innerHTML   = data.id;
-			$row.insertCell().appendChild(createElementImg(data.image));
-			$row.insertCell().innerHTML = data.marca;
-			$row.insertCell().innerHTML = data.ano;
-			$row.insertCell().innerHTML = data.cor;
-			$row.insertCell().innerHTML = data.placa;
+			$row.insertCell().innerHTML = data.id;
+			$row.insertCell().appendChild(createElementImg(data.image.value));
+			$row.insertCell().innerHTML = data.marca.value;
+			$row.insertCell().innerHTML = data.ano.value;
+			$row.insertCell().innerHTML = data.cor.value;
+			$row.insertCell().innerHTML = data.placa.value;
 		}
 		function createElementImg(source) {
 			var img   = doc.createElement('img');
