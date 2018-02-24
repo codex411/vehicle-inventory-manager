@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Last Challenge</title>
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+	<main class="main">
+		<header>
+			<h1 class="app_name" data-js="AppName"></h1>
+			<small data-js="AppPhone"></small>
+		</header>
+		<section>
+			<form data-js="form_register">
+				<div>
+					<input class="input" type="text" data-js="url_image" name="url_image" placeholder="Imagem (URL)"><br>
+					<input class="input" type="text" data-js="marca_modelo" name="marca_modelo" placeholder="Marca / Modelo"><br>
+					<input class="input" type="text" data-js="ano" name="ano" placeholder="Ano"><br>
+					<input class="input" type="text" data-js="cor" name="cor" placeholder="Cor"><br>
+					<input class="input" type="text" data-js="placa" name="placa" placeholder="Placa"><br>
+				</div>
+				<div>
+					<button type="submit">Cadastrar</button>
+				</div>
+			</form>
+		</section>
+		<hr>
+		<section>
+			<h2>Listagem de Carros</h2>
+			<table class="table" data-js="tableList">
+				<thead>
+					<tr>
+						<td>#</td>
+						<td>Imagem</td>
+						<td>Marca/Modelo</td>
+						<td>Ano</td>
+						<td>Cor</td>
+						<td>Placa</td>
+					</tr>
+				</thead>
+				<tr></tr>
+			</table>
+		</section>
+		<footer></footer>
+	</main>
+	<script src="assets/js/dom.js"></script>
+	<script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+.main {
+    text-align: -webkit-center;
+}
+.app_name {
+    display: inline-block;
+}
+.table {
+    text-align: center;
+    border: solid #000 1px;
+}
+.table thead {
+    background-color: gainsboro;
+}
+input {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.input.error-validate {
+    border: 1px solid #ff1300;
+}
