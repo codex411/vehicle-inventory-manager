@@ -1,3 +1,6 @@
+body {
+ font-family: 'Sintony', sans-serif;
+}
 
 .main {
     text-align: -webkit-center;
@@ -14,6 +17,7 @@
 }
 
 .table {
+    display: inline-block;
     text-align: center;
     border: solid #000 1px;
 }
@@ -21,13 +25,51 @@
     background-color: gainsboro;
 }
 .table .img-table {
-    width: 50px;
+    width: 100px;
+}
+.table .col-remove {
+    width: 25px;
 }
 
+.form-vertical .input {
+    display: block;
+    width: 99%;
+}
 .input {
     text-align: center;
     margin-bottom: 5px;
+    height: 20px;
+    font-size: 18px;
 }
 .input.error-validate {
     border: 1px solid #ff1300;
+}
+
+/* My Grid System */
+.col-100 {
+    width: 100%;
+}
+.col-50 {
+    display: inline-block;
+    width: 49%;
+}
+
+/* Utils */
+.dd {
+    border: 1px solid red;
+}
+.align-left {
+    text-align: left;
+}
+.align-center {
+    text-align: center;
+}
+.align-right {
+    text-align: right;
+}
+.align-top {
+    vertical-align: top;
+}
+.align-bottom {
+    vertical-align: bottom;
 }

@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Last Challenge</title>
+	<link href="https://fonts.googleapis.com/css?family=Sintony" rel="stylesheet">
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -11,34 +12,32 @@
 			<h1 class="app_name" data-js="AppName"></h1>
 			<small data-js="AppPhone"></small>
 		</header>
-		<section>
-			<form data-js="form_register">
+		<section class="col-50 align-top">
+			<form data-js="form_register" class="form-vertical">
 				<div>
-					<input class="input" type="text" data-js="image" name="image" placeholder="Imagem (URL)"><br>
-					<input class="input" type="text" data-js="brandModel" name="brandModel" placeholder="Marca / Modelo"><br>
-					<input class="input" type="text" data-js="year" name="year" placeholder="Ano"><br>
-					<input class="input" type="text" data-js="color" name="color" placeholder="Cor"><br>
-					<input class="input" type="text" data-js="plate" name="plate" placeholder="Placa"><br>
+					<input class="input" type="text" data-js="image" name="image" placeholder="Imagem (URL)">
+					<input class="input" type="text" data-js="brandModel" name="brandModel" placeholder="Marca / Modelo">
+					<input class="input" type="text" data-js="year" name="year" placeholder="Ano">
+					<input class="input" type="text" data-js="color" name="color" placeholder="Cor">
+					<input class="input" type="text" data-js="plate" name="plate" placeholder="Placa">
 				</div>
 				<div>
 					<button type="submit">Cadastrar</button>
 				</div>
 			</form>
 		</section>
-		<hr>
-		<section>
-			<h2>Listagem de Carros</h2>
+		<section class="col-50 align-top">
 			<table class="table" data-js="tableList">
 				<thead>
-					<tr>
-						<td>#</td>
-						<td>Imagem</td>
-						<td>Marca/Modelo</td>
-						<td>Ano</td>
-						<td>Cor</td>
-						<td>Placa</td>
-						<td>&nbsp;</td>
-					</tr>
+				<tr>
+					<td>#</td>
+					<td>Imagem</td>
+					<td>Marca/Modelo</td>
+					<td>Ano</td>
+					<td>Cor</td>
+					<td>Placa</td>
+					<td class="col-remove"></td>
+				</tr>
 				</thead>
 				<tbody></tbody>
 			</table>

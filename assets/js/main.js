@@ -106,7 +106,7 @@
 				throw Error('Campos inválidos: \n' + messages);
 		}
 		function addRowInListCars(data) {
-			$tableList.appendChild(createNewRowCar(data));
+			$tableList.prepend(createNewRowCar(data));
 		}
 		function createNewRowCar(data) {
 			var $fragment = doc.createDocumentFragment();
