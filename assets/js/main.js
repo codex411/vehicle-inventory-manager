@@ -17,8 +17,6 @@
 
 		function init() {
 			DOMUtils   	   = new DOM();
-			ajaxCompany    = new XMLHttpRequest();
-			ajaxCar 	   = new XMLHttpRequest();
 			urlApiCompany  = 'company.json';
 			urlApiCars 	   = 'http://localhost:3000/car';
 			lastID 	   	   = 0;
@@ -46,21 +44,47 @@
 			$form.on('submit', handleSubmitForm);
 		}
 		function loadDataCompany() {
+			ajaxCompany = new XMLHttpRequest();
 			ajaxCompany.open('GET', urlApiCompany);
 			ajaxCompany.send();
 			ajaxCompany.addEventListener('readystatechange', handleAjaxGetCompany);
 		}
-		function fillInfoCompany(dataJson) {
-			new DOM('[data-js="AppName"]').get(0).innerHTML  = dataJson.name;
-			new DOM('[data-js="AppPhone"]').get(0).innerHTML = dataJson.phone.replace(/(\d{2})(\d{3})(\d{3})(\d{3})/g, '($1) $2-$3-$4');
+		function fillInfoCompany(data) {
+			new DOM('[data-js="AppName"]').get(0).innerHTML  = data.name;
+			new DOM('[data-js="AppPhone"]').get(0).innerHTML = data.phone.replace(/(\d{2})(\d{3})(\d{3})(\d{3})/g, '($1) $2-$3-$4');
 		}
 		function loadDataCars() {
+			ajaxCar = new XMLHttpRequest();
 			ajaxCar.open('GET', urlApiCars);
 			ajaxCar.send();
 			ajaxCar.addEventListener('readystatechange', handleAjaxGetCars);
+			clearTableList();
+		}
+		function clearTableList() {
+			$tableList.get(0).querySelectorAll('tbody tr').forEach(function (row, i) {
+				if (i > 0) row.remove();
+			});
 		}
 		function isRequestOk(request) {
 			return request.readyState === 4 && request.status === 200
+		}
+		function createElementImg(source, cssClasses, title) {
+			var img   = doc.createElement('img');
+			img.src   = source;
+			img.title = title || source;
+			cssClasses.forEach(function(className) {
+				img.classList.add(className);
+			});
+			return img
+		}
+		function getDataInputs() {
+			return {
+				image: $inputUrlImage.get(0).value,
+				brandModel: $inputMarcaModelo.get(0).value,
+				year:  $inputAno.get(0).value,
+				color: $inputCor.get(0).value,
+				plate: $inputPlaca.get(0).value
+			};
 		}
 		function validateInputs(data) {
 			var messages = '';
@@ -81,9 +105,9 @@
 			}
 
 			if (messages !== '')
-				throw new Error(messages);
+				throw new Error('Campos inválidos: \n' + messages);
 		}
-		function insertCarInList(data) {
+		function addRowInListCars(data) {
 			var $row = $tableList.get(0).insertRow();
 			$row.insertCell().innerHTML = lastID = data.id;
 			$row.insertCell().appendChild(createElementImg(data.image, ['img-table']));
@@ -95,14 +119,20 @@
 			$row.insertCell().appendChild(icoRemove);
 			icoRemove.addEventListener('click', handleClickRemoveCar, false);
 		}
-		function createElementImg(source, cssClasses, title) {
-			var img   = doc.createElement('img');
-			img.src   = source;
-			img.title = title || source;
-			cssClasses.forEach(function(className) {
-				img.classList.add(className);
+		function obj4QueryString(obj) {
+			var queryStr = '';
+			for (var attr in obj)
+				queryStr += attr + '=' + obj[attr] + '&';
+			return queryStr;
+		}
+		function saveNewCar(data) {
+			var http = new XMLHttpRequest();
+			http.open('POST', urlApiCars);
+			http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			http.addEventListener('readystatechange', function () {
+				if (isRequestOk(http)) loadDataCars();
 			});
-			return img
+			http.send(obj4QueryString(data));
 		}
 
 		function handleAjaxGetCompany() {
@@ -113,24 +143,17 @@
 			if (!isRequestOk(ajaxCar)) return;
 			var cars = JSON.parse(ajaxCar.responseText);
 			cars.forEach(function (car) {
-				insertCarInList(car);
+				addRowInListCars(car);
 			});
 		}
 		function handleSubmitForm(e) {
 			e.preventDefault();
-			var dataInputs = {
-				image: $inputUrlImage.get(0).value,
-				brandModel: $inputMarcaModelo.get(0).value,
-				year:  $inputAno.get(0).value,
-				color: $inputCor.get(0).value,
-				plate: $inputPlaca.get(0).value
-			};
+			var dataInputs = getDataInputs();
 			try {
 				validateInputs(dataInputs);
-				dataInputs.id = ++lastID;
-				insertCarInList(dataInputs);
+				saveNewCar(dataInputs);
 			} catch (e) {
-				alert('Campos inválidos: \n' + e.message);
+				alert(e.message);
 			}
 		}
 		function handleClickRemoveCar() {
