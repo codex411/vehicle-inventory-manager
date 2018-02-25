@@ -4,9 +4,12 @@
 		return Object.prototype.toString.call(obj);
 	}
 
-	//TODO Implementar Factory Pattern
 	function DOM(query) {
+		if(!(this instanceof DOM))
+			return new DOM(query);
 		this.elements = this.getDOMElements(query);
+		if (this.elements.length === 1)
+			return this.get();
 	}
 	DOM.prototype.getDOMElements = function getDOMElements(query) {
 		return doc.querySelectorAll(query);
@@ -24,8 +27,10 @@
 	DOM.prototype.getElements  = function getElements () {
 		return this.elements;
 	}
-	DOM.prototype.get  = function get (index) {
-		return this.getElements()[index];
+	DOM.prototype.get  	  = function get (index) {
+		if (!index)
+			return this.elements[0];
+		return this.elements[index];
 	}
 	DOM.prototype.forEach = function forEach(callback) {
 		return Array.prototype.forEach.call(this.elements, callback);
@@ -48,25 +53,27 @@
 	DOM.prototype.reduceRight = function reduceRight(callback, initialValue) {
 		return Array.prototype.reduceRight.call(this.elements, callback, initialValue);
 	}
-	DOM.prototype.isArray     = function isArray(value) {
+
+	//Static methods
+	DOM.isArray    = function isArray(value) {
 		return isTypeOf(value) === '[object Array]';
 	}
-	DOM.prototype.isNumber 	  = function isNumber(value) {
+	DOM.isNumber   = function isNumber(value) {
 		return isTypeOf(value) === '[object number]';
 	}
-	DOM.prototype.isFunction  = function isFunction(value) {
+	DOM.isFunction = function isFunction(value) {
 		return isTypeOf(value) === '[object Function]';
 	}
-	DOM.prototype.isBoolean   = function isBolean(value) {
+	DOM.isBoolean  = function isBolean(value) {
 		return isTypeOf(value) === '[object Boolean]';
 	}
-	DOM.prototype.isObject 	  = function isObject(value) {
+	DOM.isObject   = function isObject(value) {
 		return isTypeOf(value) === '[object Object]';
 	}
-	DOM.prototype.isNull 	  = function isNull(value) {
+	DOM.isNull 	   = function isNull(value) {
 		return value === null || value === undefined;
 	}
-	DOM.prototype.isString 	  = function isString(value) {
+	DOM.isString   = function isString(value) {
 		return isTypeOf(value) == '[object String]'
 	}
 

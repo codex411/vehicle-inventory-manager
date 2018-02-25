@@ -1,11 +1,10 @@
-;(function(win, doc, DOM) {
+;(function(win, doc, $) {
 	'use strict';
 	function app() {
 		var ajaxCompany;
 		var ajaxCar;
 		var urlApiCompany;
 		var urlApiCars;
-		var DOMUtils;
 		var $tableList;
 		var $form;
 		var $inputUrlImage;
@@ -16,24 +15,23 @@
 		var lastID;
 
 		function init() {
-			DOMUtils   	   = new DOM();
 			urlApiCompany  = 'company.json';
 			urlApiCars 	   = 'http://localhost:3000/car';
 			lastID 	   	   = 0;
-			$form  		   = new DOM('[data-js="form_register"]');
-			$inputUrlImage = new DOM('[data-js="image"]');
-			$inputAno 	   = new DOM('[data-js="year"]');
-			$inputPlaca    = new DOM('[data-js="plate"]');
-			$inputCor      = new DOM('[data-js="color"]');
-			$inputMarcaModelo = new DOM('[data-js="brandModel"]');
-			$tableList 	   = new DOM('[data-js="tableList"]');
+			$form  		   = $('[data-js="form_register"]');
+			$inputUrlImage = $('[data-js="image"]');
+			$inputAno 	   = $('[data-js="year"]');
+			$inputPlaca    = $('[data-js="plate"]');
+			$inputCor      = $('[data-js="color"]');
+			$inputMarcaModelo = $('[data-js="brandModel"]');
+			$tableList 	      = $('[data-js="tableList"] tbody');
 
 			//TESTE
-			$inputUrlImage.get(0).value    = 'http://carroecarros.com.br/wp-content/uploads/2017/06/Novo-Punto-2018-6.jpg';
-			$inputMarcaModelo.get(0).value = 'VW Gol 1.6';
-			$inputAno.get(0).value 		   = '2000';
-			$inputPlaca.get(0).value	   = 'MPB-2900';
-			$inputCor.get(0).value		   = 'Prata';
+			$inputUrlImage.value    = 'http://carroecarros.com.br/wp-content/uploads/2017/06/Novo-Punto-2018-6.jpg';
+			$inputMarcaModelo.value = 'VW Gol 1.6';
+			$inputAno.value 		= '2000';
+			$inputPlaca.value	    = 'MPB-2900';
+			$inputCor.value		    = 'Prata';
 			//TESTE */
 
 			loadDataCompany();
@@ -41,7 +39,7 @@
 			initEvents();
 		}
 		function initEvents() {
-			$form.on('submit', handleSubmitForm);
+			$form.addEventListener('submit', handleSubmitForm);
 		}
 		function loadDataCompany() {
 			ajaxCompany = new XMLHttpRequest();
@@ -50,19 +48,19 @@
 			ajaxCompany.addEventListener('readystatechange', handleAjaxGetCompany);
 		}
 		function fillInfoCompany(data) {
-			new DOM('[data-js="AppName"]').get(0).innerHTML  = data.name;
-			new DOM('[data-js="AppPhone"]').get(0).innerHTML = data.phone.replace(/(\d{2})(\d{3})(\d{3})(\d{3})/g, '($1) $2-$3-$4');
+			$('[data-js="AppName"]').innerHTML  = data.name;
+			$('[data-js="AppPhone"]').innerHTML = data.phone.replace(/(\d{2})(\d{3})(\d{3})(\d{3})/g, '($1) $2-$3-$4');
 		}
 		function loadDataCars() {
 			ajaxCar = new XMLHttpRequest();
 			ajaxCar.open('GET', urlApiCars);
 			ajaxCar.send();
-			ajaxCar.addEventListener('readystatechange', handleAjaxGetCars);
 			clearTableList();
+			ajaxCar.addEventListener('readystatechange', handleAjaxGetCars);
 		}
 		function clearTableList() {
-			$tableList.get(0).querySelectorAll('tbody tr').forEach(function (row, i) {
-				if (i > 0) row.remove();
+			$tableList.querySelectorAll('tr').forEach(function (row) {
+				row.remove();
 			});
 		}
 		function isRequestOk(request) {
@@ -79,11 +77,11 @@
 		}
 		function getDataInputs() {
 			return {
-				image: $inputUrlImage.get(0).value,
-				brandModel: $inputMarcaModelo.get(0).value,
-				year:  $inputAno.get(0).value,
-				color: $inputCor.get(0).value,
-				plate: $inputPlaca.get(0).value
+				image: $inputUrlImage.value,
+				brandModel: $inputMarcaModelo.value,
+				year:  $inputAno.value,
+				color: $inputCor.value,
+				plate: $inputPlaca.value
 			};
 		}
 		function validateInputs(data) {
@@ -105,19 +103,38 @@
 			}
 
 			if (messages !== '')
-				throw new Error('Campos inválidos: \n' + messages);
+				throw Error('Campos inválidos: \n' + messages);
 		}
 		function addRowInListCars(data) {
-			var $row = $tableList.get(0).insertRow();
-			$row.insertCell().innerHTML = lastID = data.id;
-			$row.insertCell().appendChild(createElementImg(data.image, ['img-table']));
-			$row.insertCell().innerHTML = data.brandModel;
-			$row.insertCell().innerHTML = data.year;
-			$row.insertCell().innerHTML = data.color;
-			$row.insertCell().innerHTML = data.plate;
+			$tableList.appendChild(createNewRowCar(data));
+		}
+		function createNewRowCar(data) {
+			var $fragment = doc.createDocumentFragment();
+			var $tr  	  = doc.createElement('tr');
+			var $tdId 	  = doc.createElement('td');
+			var $tdImage  = doc.createElement('td');
+			var $tdBrand  = doc.createElement('td');
+			var $tdYear   = doc.createElement('td');
+			var $tdPlate  = doc.createElement('td');
+			var $tdColor  = doc.createElement('td');
+			var $tdOptions= doc.createElement('td');
+			$tdId.textContent    = lastID = data.id;
+			$tdBrand.textContent = data.brandModel;
+			$tdYear.textContent  = data.year;
+			$tdColor.textContent = data.color;
+			$tdPlate.textContent = data.plate;
+			$tdImage.appendChild(createElementImg(data.image, ['img-table']));
 			var icoRemove = createElementImg('assets/img/ico-remove.png', ['ico', 'ico-clickable'], 'Remover');
-			$row.insertCell().appendChild(icoRemove);
+			$tdOptions.appendChild(icoRemove);
 			icoRemove.addEventListener('click', handleClickRemoveCar, false);
+			$tr.appendChild($tdId);
+			$tr.appendChild($tdImage);
+			$tr.appendChild($tdBrand);
+			$tr.appendChild($tdYear);
+			$tr.appendChild($tdColor);
+			$tr.appendChild($tdPlate);
+			$tr.appendChild($tdOptions);
+			return $fragment.appendChild($tr);
 		}
 		function obj4QueryString(obj) {
 			var queryStr = '';
