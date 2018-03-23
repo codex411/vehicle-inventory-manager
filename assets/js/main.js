@@ -123,6 +123,7 @@
 			$tdYear.textContent  = data.year;
 			$tdColor.textContent = data.color;
 			$tdPlate.textContent = data.plate;
+			$tdPlate.id = 'plate';
 			$tdImage.appendChild(createElementImg(data.image, ['img-table']));
 			var icoRemove = createElementImg('assets/img/ico-remove.png', ['ico', 'ico-clickable'], 'Remover');
 			$tdOptions.appendChild(icoRemove);
@@ -151,6 +152,15 @@
 			});
 			http.send(obj4QueryString(data));
 		}
+		function deleteCar(plate) {
+			var http = new XMLHttpRequest();
+			http.open('DELETE', urlApiCars);
+			http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			http.addEventListener('readystatechange', function () {
+				if (isRequestOk(http)) loadDataCars();
+			});
+			http.send(obj4QueryString({plate: plate}));
+		}
 
 		function handleAjaxGetCompany() {
 			if (isRequestOk(ajaxCompany))
@@ -174,7 +184,14 @@
 			}
 		}
 		function handleClickRemoveCar() {
-			this.parentElement.parentElement.remove();
+			var $row = this.parentElement.parentElement;
+			var plate = $row.querySelector('#plate').textContent;
+			try {
+				deleteCar(plate);
+				$row.remove();
+			} catch (e) {
+				alert(e.message);
+			}
 		}
 
 		return {
