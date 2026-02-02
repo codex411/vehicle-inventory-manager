@@ -1,9 +1,23 @@
+/**
+ * DOM Utility Library
+ * Lightweight DOM manipulation library similar to jQuery
+ */
 (function (win, doc) {
 	'use strict';
+	
+	/**
+	 * Get object type string
+	 * @param {*} obj - Object to check
+	 * @returns {string} Type string
+	 */
 	function isTypeOf(obj) {
 		return Object.prototype.toString.call(obj);
 	}
 
+	/**
+	 * DOM constructor - creates a DOM wrapper object
+	 * @param {string} query - CSS selector query
+	 */
 	function DOM(query) {
 		if(!(this instanceof DOM))
 			return new DOM(query);
@@ -11,15 +25,31 @@
 		if (this.elements.length === 1)
 			return this.get();
 	}
+	/**
+	 * Get DOM elements matching the query
+	 * @param {string} query - CSS selector
+	 * @returns {NodeList}
+	 */
 	DOM.prototype.getDOMElements = function getDOMElements(query) {
 		return doc.querySelectorAll(query);
 	}
-	DOM.prototype.on   = function on(eventType, callback) {
+	
+	/**
+	 * Attach event listener to elements
+	 * @param {string} eventType - Event type
+	 * @param {Function} callback - Event handler
+	 */
+	DOM.prototype.on = function on(eventType, callback) {
 		Array.prototype.forEach.call(this.elements, function(element){
 			element.addEventListener(eventType, callback, false);
 		});
 	}
-	DOM.prototype.off  = function off (eventType, callback) {
+	/**
+	 * Remove event listener from elements
+	 * @param {string} eventType - Event type
+	 * @param {Function} callback - Event handler
+	 */
+	DOM.prototype.off = function off(eventType, callback) {
 		Array.prototype.forEach.call(this.elements, function(element){
 			element.removeEventListener(eventType, callback);
 		});
@@ -54,8 +84,13 @@
 		return Array.prototype.reduceRight.call(this.elements, callback, initialValue);
 	}
 
-	//Static methods
-	DOM.isArray    = function isArray(value) {
+	// Static utility methods
+	/**
+	 * Check if value is an array
+	 * @param {*} value - Value to check
+	 * @returns {boolean}
+	 */
+	DOM.isArray = function isArray(value) {
 		return isTypeOf(value) === '[object Array]';
 	}
 	DOM.isNumber   = function isNumber(value) {

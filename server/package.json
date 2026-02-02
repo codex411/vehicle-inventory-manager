@@ -1,6 +1,21 @@
 {
-  "name": "rest-api",
-  "version": "0.1.0",
+  "name": "vehicle-inventory-api",
+  "version": "2.0.0",
+  "description": "RESTful API server for vehicle inventory management",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "express",
+    "vehicle",
+    "inventory"
+  ],
+  "author": "",
+  "license": "GPL-3.0",
   "dependencies": {
     "body-parser": "^1.14.2",
     "cors": "^2.7.1",

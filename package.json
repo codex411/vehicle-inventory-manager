@@ -1,7 +1,26 @@
 {
-  "name": "challenge-29",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "name": "vehicle-inventory-manager",
+  "version": "2.0.0",
+  "description": "A modern web application for managing vehicle inventory",
+  "main": "index.html",
+  "scripts": {
+    "start": "cd server && node app.js",
+    "dev": "cd server && node app.js"
+  },
+  "keywords": [
+    "vehicle",
+    "inventory",
+    "management",
+    "automotive",
+    "javascript",
+    "express",
+    "rest-api"
+  ],
+  "author": "",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
   "dependencies": {}
 }
